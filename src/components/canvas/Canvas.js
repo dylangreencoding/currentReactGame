@@ -183,6 +183,5 @@ export default Canvas;
 
 const canvasStyle = {
   backgroundColor: '#000000'
-  
 }
 

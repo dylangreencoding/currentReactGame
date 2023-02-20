@@ -14,10 +14,25 @@ body {
   font-family: monospace;
 }
 
+/* Dashboard.js */
+.dashboard {
+  display: flex;
+}
+
+.panel {
+  width: 25vw;
+  height: 100vh;
+  background-color: #333;
+  color: #DDD;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Panel.js */
 .panel-item {
-  /* height: 100vh; */
   padding: 0 1rem 0 1rem;
-  
   overflow-y: auto;
 }
 
@@ -31,7 +46,7 @@ body {
   justify-content: flex-end;
 }
 
-.nav {
+.panel-nav {
   display: flex;
   justify-content: space-around;
   height: 3rem;
@@ -57,6 +72,7 @@ body {
   background-color: rgb(96, 0, 0);
 }
 
+/* Chat.js */
 .chat-button {
   background: none;
   border: none;

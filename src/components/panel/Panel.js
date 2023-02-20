@@ -19,7 +19,7 @@ export function PanelNav({activeTab, setActiveTab}) {
   }
 
   return (
-      <nav className='nav'>
+      <nav className='panel-nav'>
         <span
           className={`nav-item ${activeTab === 'resources' ? 'active' : ''}`}
           onClick={handleResourcesTab}

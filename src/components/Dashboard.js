@@ -9,7 +9,7 @@ function Dashboard () {
   const [activeTab, setActiveTab] = React.useState('resources');
 
   return (
-    <div style={dashboardStyle}>
+    <div className='dashboard'>
       <Canvas 
         width={window.innerWidth * 0.75}
         height={window.innerHeight}
@@ -17,7 +17,7 @@ function Dashboard () {
         setBoard={setBoard}
       />
 
-      <div style={PanelStyle}>
+      <div className='panel'>
         <Panel
           board={board}
           setBoard={setBoard}
@@ -35,17 +35,5 @@ function Dashboard () {
 
 export default Dashboard;
 
-const dashboardStyle = {
-  display: 'flex'
-}
 
-const PanelStyle = {
-  width: '25vw',
-  height: '100vh',
-  backgroundColor: '#333',
-  color: '#DDD',
 
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between'
-}
