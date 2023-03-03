@@ -1,8 +1,7 @@
 import React from "react";
 import uuid from 'react-uuid';
 
-export function Wall ({chatMessage, setChatMessage}) {
-  console.log('wall rendered')
+export function Wall ({chatMessages}) {
   const wallBottomRef = React.useRef('null');
   
   React.useEffect(() => {
@@ -12,8 +11,8 @@ export function Wall ({chatMessage, setChatMessage}) {
   })
 
   return (
-    <div style={wallStyle}>
-      {chatMessage.map((message) => {
+    <div className='wall'>
+      {chatMessages.map((message) => {
         return (
           <p key={uuid()}> userName : {message}</p>
         )
@@ -23,17 +22,12 @@ export function Wall ({chatMessage, setChatMessage}) {
   )
 }
 
-const wallStyle = {
-  overflowY: 'auto'
-}
-
-export function Chat ({chatMessage, setChatMessage}) {
-
+export function Chat ({chatMessages, setChatMessages}) {
   const [textArea, setTextArea] = React.useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setChatMessage([...chatMessage, textArea]);
+    setChatMessages([...chatMessages, textArea]);
     setTextArea('');
   }
 
@@ -47,20 +41,11 @@ export function Chat ({chatMessage, setChatMessage}) {
             name='postChat'
             type='text'
             autoComplete='off'
-            style={textareaStyle}
             value={textArea}
             onChange={(e) => setTextArea(e.target.value)}
           />
         </label>
-        
       </form>
     </div>
   )
-}
-
-
-
-const textareaStyle = {
-  resize: 'none',
-  width: '100%'
 }

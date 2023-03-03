@@ -8,7 +8,7 @@ function Canvas ({
 
   function draw (ctx, w, h, board) {  
     ctx.clearRect(0, 0, w, h);
-    ctx.strokeStyle = "#333";
+    ctx.strokeStyle = "#424242";
 
     for (let x = board.origin.x; x <= board.apogee.x; x += board.scale) {
       ctx.beginPath();
@@ -26,6 +26,7 @@ function Canvas ({
       ctx.closePath();
       ctx.stroke();
     }
+
     for (const zombie of board.zombies) {
       ctx.fillStyle = 'green';
       ctx.beginPath();
@@ -33,6 +34,16 @@ function Canvas ({
       ctx.closePath();
       ctx.fill();
     }
+
+    for (const wall of board.walls) {
+      ctx.strokeStyle = '#FAFAFA';
+      ctx.beginPath();
+      ctx.moveTo(wall.begin.x, wall.begin.y);
+      ctx.lineTo(wall.end.x, wall.end.y);
+      ctx.closePath();
+      ctx.stroke();
+    }
+
 
     ctx.strokeStyle = 'gold';
     ctx.beginPath();
@@ -105,10 +116,8 @@ function Canvas ({
     let hashX = getHashX();
     let hashY = getHashY();
 
-    const handleResize = (e) => {
-      canvas.width = window.innerWidth * 0.75;
-      canvas.height = window.innerHeight;
-      draw(ctx, canvas.width, canvas.height, currentBoard);
+    const handleMouseDown = (e) => {
+      mouse.pressed = true;
     }
 
     const handleMouseMove = (e) => {
@@ -118,15 +127,24 @@ function Canvas ({
       if (mouse.pressed === true) {
         mouse.movedMap = true;
         currentBoard.selector = {};
+
         currentBoard.origin.x += mouse.movementXY.x;
         currentBoard.origin.y += mouse.movementXY.y;
         currentBoard.apogee.x += mouse.movementXY.x;
         currentBoard.apogee.y += mouse.movementXY.y;
+
         currentBoard.selected.x += mouse.movementXY.x
         currentBoard.selected.y += mouse.movementXY.y
+
         for (const zombie of currentBoard.zombies) {
           zombie.x += mouse.movementXY.x;
           zombie.y += mouse.movementXY.y;
+        }
+        for (const wall of currentBoard.walls) {
+          wall.begin.x += mouse.movementXY.x;
+          wall.begin.y += mouse.movementXY.y;
+          wall.end.x += mouse.movementXY.x;
+          wall.end.y += mouse.movementXY.y;
         }
       } else {
         currentBoard.selector.x = mouse.position.x;
@@ -135,9 +153,6 @@ function Canvas ({
       draw(ctx, canvas.width, canvas.height, currentBoard);
     }
 
-    const handleMouseDown = (e) => {
-      mouse.pressed = true;
-    }
     const handleMouseUp = (e) => {
       mouse.pressed = false;
       mouse.selected = getMousePositionXY(e)
@@ -148,7 +163,6 @@ function Canvas ({
           currentBoard.selected = mouse.selected;
         }
         setBoard({...board, currentBoard});
-        console.log(board);
         draw(ctx, canvas.width, canvas.height, currentBoard);
         
       }
@@ -156,15 +170,31 @@ function Canvas ({
       hashY = getHashY();
       mouse.movedMap = false;
     }
-    window.addEventListener('resize', handleResize);
-    canvas.addEventListener('mousemove', handleMouseMove);
+
+    const handleMouseLeave = (e) => {
+      mouse.pressed = false;
+      currentBoard.selector.x = undefined;
+      currentBoard.selector.y = undefined;
+      draw(ctx, canvas.width, canvas.height, currentBoard);
+    }
+
+    const handleResize = (e) => {
+      canvas.width = window.innerWidth * 0.75;
+      canvas.height = window.innerHeight;
+      draw(ctx, canvas.width, canvas.height, currentBoard);
+    }
+
     canvas.addEventListener('mousedown', handleMouseDown);
+    canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseup', handleMouseUp);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
-      canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mousedown', handleMouseDown);
+      canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseup', handleMouseUp);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('resize', handleResize);
       console.log('cleaned up')
     }
   }, [board, setBoard]);
@@ -173,7 +203,7 @@ function Canvas ({
       <canvas
         width={width}
         height={height}
-        style={canvasStyle}
+        className='canvas'
         ref={canvasRef}
       />
   )
@@ -181,7 +211,5 @@ function Canvas ({
 
 export default Canvas;
 
-const canvasStyle = {
-  backgroundColor: '#000000'
-}
+
 

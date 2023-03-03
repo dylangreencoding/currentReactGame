@@ -6,7 +6,7 @@ import { boardTemplate } from './API';
 function Dashboard () {
   const [board, setBoard] = React.useState(boardTemplate());
 
-  const [activeTab, setActiveTab] = React.useState('resources');
+  const [activeTab, setActiveTab] = React.useState('home');
 
   return (
     <div className='dashboard'>

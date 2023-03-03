@@ -1,17 +1,17 @@
 import React from "react";
-import { Resources } from "./panel-tabs/Resources.js";
-import { Games } from "./panel-tabs/Games.js";
+import { Home } from "./panel-tabs/Home.tsx";
+import { Play } from "./panel-tabs/Play.js";
 import { Wall, Chat } from "./panel-tabs/Chat.js"
 
 
 export function PanelNav({activeTab, setActiveTab}) {
 
-  const handleResourcesTab = () => {
-    setActiveTab('resources');
+  const handleHomeTab = () => {
+    setActiveTab('home');
   };
 
-  const handleGamesTab = () => {
-    setActiveTab('games');
+  const handlePlayTab = () => {
+    setActiveTab('play');
   }
 
   const handleChatTab = () => {
@@ -21,16 +21,16 @@ export function PanelNav({activeTab, setActiveTab}) {
   return (
       <nav className='panel-nav'>
         <span
-          className={`nav-item ${activeTab === 'resources' ? 'active' : ''}`}
-          onClick={handleResourcesTab}
+          className={`nav-item ${activeTab === 'home' ? 'active' : ''}`}
+          onClick={handleHomeTab}
         >
-          RESOURCES
+          HOME
         </span>
         <span
-          className={`nav-item ${activeTab === 'games' ? 'active' : ''}`}
-          onClick={handleGamesTab}
+          className={`nav-item ${activeTab === 'play' ? 'active' : ''}`}
+          onClick={handlePlayTab}
         >
-          GAMES
+          SESSION
         </span>
         <span
           className={`nav-item ${activeTab === 'chat' ? 'active' : ''}`}
@@ -44,24 +44,24 @@ export function PanelNav({activeTab, setActiveTab}) {
 
 export function Panel ({board, setBoard, activeTab, setActiveTab}) {
 
-  const [chatMessage, setChatMessage] = React.useState(['welcome back']);
+  const [chatMessages, setChatMessages] = React.useState([`each chat is associated with a either a board template or game - there are no "friends" on this platform - to invite someone to play in a game you are hosting (or collaborate on a map), you have to know their username and they have to know your game (or map) "secret key"`]);
 
 
   const displayActiveTab = () => {
-    if (activeTab === 'resources') {
-      return <Resources />
-    } else if (activeTab === 'games') {
-      return <Games board={board} setBoard={setBoard}/> 
+    if (activeTab === 'home') {
+      return <Home />
+    } else if (activeTab === 'play') {
+      return <Play board={board} setBoard={setBoard}/> 
     } else if (activeTab === 'chat') {
-      return <Chat chatMessage={chatMessage}
-      setChatMessage={setChatMessage} />
+      return <Chat chatMessages={chatMessages}
+      setChatMessages={setChatMessages} />
     }
   }
 
   const displayWall = () => {
     if (activeTab === 'chat') {
-      return <Wall chatMessage={chatMessage}
-      setChatMessage={setChatMessage}/>
+      return <Wall chatMessages={chatMessages}
+      setChatMessages={setChatMessages}/>
     }
   }
 
